@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resona · voice creation studio</title>
+<meta name="description" content="Resona creates voices from a description, a recording or a blend of two, keeps them in a library you search by meaning, and directs them through 75 emotions. It runs on your own CUDA GPU, on Qwen3-TTS.">
+<meta property="og:title" content="Resona · voice creation studio">
+<meta property="og:description" content="Resona creates voices from a description, a recording or a blend of two, keeps them in a library you search by meaning, and directs them through 75 emotions. It runs on your own CUDA GPU, on Qwen3-TTS.">
+<meta property="og:url" content="https://resona.syalia.com/">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0A0D14">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/recursive-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<header class="nav">
+ <a class="wm" href="#top" aria-label="resona"><svg width="28" height="24" viewBox="0 0 28 24" aria-hidden="true"><rect x="0" y="7" width="4" height="10" rx="2" fill="#8AA8FF"/><rect x="6" y="4" width="4" height="16" rx="2" fill="#7FC6E6"/><rect x="12" y="0" width="4" height="24" rx="2" fill="#5EEAD4"/><rect x="18" y="4" width="4" height="16" rx="2" fill="#AFC79D"/><rect x="24" y="7" width="4" height="10" rx="2" fill="#FF9466"/></svg>resona</a>
+ <nav class="links">
+  <a href="#cad" data-en="Emotion CAD" data-es="Emotion CAD">Emotion CAD</a>
+  <a href="#what" data-en="What it does" data-es="Qué hace">What it does</a>
+  <a href="#listen" data-en="Listen" data-es="Escuchar">Listen</a>
+  <a href="#run" data-en="Run it" data-es="Cómo corre">Run it</a>
+ </nav>
+ <span class="sp"><span class="prev">Preview</span><span class="lang" role="group" aria-label="Language"><button type="button" id="l-en" lang="en">EN</button><button type="button" id="l-es" lang="es">ES</button></span></span>
+</header>
+
+<main id="top">
+<section class="hero">
+ <div>
+  <p class="eyebrow" data-en="Voice creation studio" data-es="Estudio de creación de voz">Voice creation studio</p>
+  <h1 data-en="Design a voice. Then direct it." data-es="Diseña una voz. Después, dirígela.">Design a voice. Then direct it.</h1>
+  <p class="sub" id="sub" data-en="Resona creates voices from a description, a recording or a blend of two, keeps them in a library you search by meaning, and directs them through 75 emotions. It runs on your own CUDA GPU, on Qwen3-TTS." data-es="Resona crea voces a partir de una descripción, una grabación o la mezcla de dos, las guarda en una biblioteca que se busca por significado y las dirige con 75 emociones. Corre en tu propia GPU CUDA, sobre Qwen3-TTS.">Resona creates voices from a description, a recording or a blend of two, keeps them in a library you search by meaning, and directs them through 75 emotions. It runs on your own CUDA GPU, on Qwen3-TTS.</p>
+  <div class="ctas">
+   <a class="btn pri" href="#listen" data-en="Listen" data-es="Escuchar">Listen</a>
+   <a class="btn" href="mailto:hello@syalia.com?subject=Resona" data-en="Talk to us" data-es="Escríbenos">Talk to us</a>
+  </div>
+  <p class="pl" data-en-html="The engine behind the audiobooks of &lt;a href=&quot;#listen&quot;&gt;Parlantia&lt;/a&gt;." data-es-html="El motor de los audiolibros de &lt;a href=&quot;#listen&quot;&gt;Parlantia&lt;/a&gt;.">The engine behind the audiobooks of <a href="#listen">Parlantia</a>.</p>
+ </div>
+
+ <div class="cad" id="cad">
+  <div class="hd"><b>Emotion CAD</b><select id="lng" aria-label="Emotion names language"></select></div>
+  <p class="cad-intro" data-en="Pick an emotion and an intensity. Each emotion shifts three sampling parameters (temperature, repetition penalty, top-p); the intensity scales the shift from ×0.25 to ×2. These are the numbers the engine receives." data-es="Elige una emoción y una intensidad. Cada emoción desplaza tres parámetros de muestreo (temperatura, penalización por repetición, top-p); la intensidad escala el desplazamiento de ×0.25 a ×2. Son los números que recibe el motor.">Pick an emotion and an intensity. Each emotion shifts three sampling parameters (temperature, repetition penalty, top-p); the intensity scales the shift from ×0.25 to ×2. These are the numbers the engine receives.</p>
+  <div class="map"><svg id="map" viewBox="0 0 400 260" role="img" aria-label="Emotion map: temperature against repetition penalty; dot size is top-p"></svg></div>
+  <div class="chips" id="chips"></div>
+  <label class="all"><span data-en="All 75 emotions" data-es="Las 75 emociones">All 75 emotions</span> <select id="emo"></select></label>
+  <div class="ints" id="ints"><span data-en="intensity" data-es="intensidad">intensity</span></div>
+  <div class="read">
+   <div><span data-en="temperature" data-es="temperatura">temperature</span><b id="r-t">0.90</b><i id="r-dt"></i></div>
+   <div><span data-en="rep. penalty" data-es="penalización">rep. penalty</span><b id="r-p">1.05</b><i id="r-dp"></i></div>
+   <div><span>top-p</span><b id="r-q">1.00</b><i id="r-dq"></i></div>
+  </div>
+  <div class="slot" id="slot"><button type="button" class="play" id="slot-play" aria-label="Play sample" disabled><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z" fill="currentColor"/></svg></button><span id="slot-t"></span></div>
+ </div>
+</section>
+
+<section class="sec" id="what">
+ <span class="k" data-en="What it does" data-es="Qué hace">What it does</span>
+ <h2 data-en="From a new voice to a finished audiobook." data-es="De una voz nueva a un audiolibro terminado.">From a new voice to a finished audiobook.</h2>
+ <div class="grid">
+  <div class="card"><h3 data-en="Design" data-es="Diseña">Design</h3><p data-en="Describe a voice in words. The 1.7B VoiceDesign model renders it, and Resona keeps its reference audio and seed." data-es="Describe una voz con palabras. El modelo VoiceDesign de 1.7B la genera, y Resona guarda su audio de referencia y su semilla.">Describe a voice in words. The 1.7B VoiceDesign model renders it, and Resona keeps its reference audio and seed.</p></div>
+  <div class="card"><h3 data-en="Clone" data-es="Clona">Clone</h3><p data-en="Start from a clean recording. The 0.6B Base model turns it into a 1024-dimension voice vector you can reuse." data-es="Parte de una grabación limpia. El modelo Base de 0.6B la convierte en un vector de voz de 1024 dimensiones que puedes reutilizar.">Start from a clean recording. The 0.6B Base model turns it into a 1024-dimension voice vector you can reuse.</p></div>
+  <div class="card"><h3 data-en="Blend" data-es="Mezcla">Blend</h3><p data-en="Mix two voices with one weight and keep the lineage of the new one." data-es="Mezcla dos voces con un solo peso y guarda el linaje de la nueva.">Mix two voices with one weight and keep the lineage of the new one.</p></div>
+  <div class="card"><h3 data-en="Library" data-es="Biblioteca">Library</h3><p data-en="Find a voice by what it sounds like, with local text embeddings on the CPU." data-es="Encuentra una voz por cómo suena, con embeddings de texto locales en la CPU.">Find a voice by what it sounds like, with local text embeddings on the CPU.</p></div>
+  <div class="card"><h3 data-en="Dialogues" data-es="Diálogos">Dialogues</h3><p data-en="Give each line a voice and an emotion. Resona renders the lines as jobs, mixes them and masters the result: compression, then loudness to −14 LUFS." data-es="Dale a cada línea una voz y una emoción. Resona genera las líneas como trabajos, las mezcla y masteriza el resultado: compresión y sonoridad a −14 LUFS.">Give each line a voice and an emotion. Resona renders the lines as jobs, mixes them and masters the result: compression, then loudness to −14 LUFS.</p></div>
+  <div class="card"><h3 data-en="Audiobooks and API" data-es="Audiolibros y API">Audiobooks and API</h3><p data-en="Assemble chapters into an .m4b with chapter marks. Drive it all from a REST API with asynchronous jobs." data-es="Une capítulos en un .m4b con marcas de capítulo. Contrólalo todo desde una API REST con trabajos asíncronos.">Assemble chapters into an .m4b with chapter marks. Drive it all from a REST API with asynchronous jobs.</p></div>
+ </div>
+</section>
+
+<section class="sec" id="listen">
+ <span class="k" data-en="Listen" data-es="Escuchar">Listen</span>
+ <h2 data-en="Heard in Parlantia." data-es="Se oye en Parlantia.">Heard in Parlantia.</h2>
+ <p class="lead" data-en-html="Parlantia publishes audiobooks of José Martí made with Resona. Three short excerpts, in Spanish. The full books are at &lt;a href=&quot;https://parlantia.diaitu.com&quot;&gt;parlantia.diaitu.com&lt;/a&gt;." data-es-html="Parlantia publica audiolibros de José Martí hechos con Resona. Tres fragmentos cortos. Los libros completos están en &lt;a href=&quot;https://parlantia.diaitu.com&quot;&gt;parlantia.diaitu.com&lt;/a&gt;.">Parlantia publishes audiobooks of José Martí made with Resona. Three short excerpts, in Spanish. The full books are at <a href="https://parlantia.diaitu.com">parlantia.diaitu.com</a>.</p>
+ <div class="tracks">
+  <div class="track"><div class="t">Mi Caballero</div><div class="s">Ismaelillo · 0:20</div><audio controls preload="none" src="audio/parlantia/04-ISM-Mi_Caballero.mp3"></audio></div>
+  <div class="track"><div class="t">Poema XIX</div><div class="s">Versos sencillos · 0:25</div><audio controls preload="none" src="audio/parlantia/19-VS-Poema_XIX.mp3"></audio></div>
+  <div class="track"><div class="t">Poema V</div><div class="s">Versos sencillos · 0:31</div><audio controls preload="none" src="audio/parlantia/05-VS-Poema_V.mp3"></audio></div>
+ </div>
+ <p class="credit" data-en-html="Audio: &lt;a href=&quot;https://parlantia.diaitu.com&quot;&gt;Parlantia&lt;/a&gt;, published there as samples." data-es-html="Audio: &lt;a href=&quot;https://parlantia.diaitu.com&quot;&gt;Parlantia&lt;/a&gt;, publicado allí como muestra.">Audio: <a href="https://parlantia.diaitu.com">Parlantia</a>, published there as samples.</p>
+</section>
+
+<section class="sec" id="run">
+ <span class="k" data-en="Run it" data-es="Cómo corre">Run it</span>
+ <h2 data-en="Three processes, one GPU, your machine." data-es="Tres procesos, una GPU, tu máquina.">Three processes, one GPU, your machine.</h2>
+ <div class="run">
+  <svg viewBox="0 0 360 200" role="img" aria-label="Studio, core and engine on one machine">
+   <rect x="8" y="14" width="104" height="66" rx="10" fill="#121722" stroke="#242C3D"/>
+   <text x="20" y="38" class="d-h">studio</text>
+   <text x="20" y="56" class="d-m">resona ui</text>
+   <text x="20" y="70" class="d-m">:8080 · web</text>
+   <rect x="128" y="14" width="104" height="66" rx="10" fill="#121722" stroke="#242C3D"/>
+   <text x="140" y="38" class="d-h">core</text>
+   <text x="140" y="56" class="d-m">resona core</text>
+   <text x="140" y="70" class="d-m">:8200 · API</text>
+   <rect x="248" y="14" width="104" height="66" rx="10" fill="#121722" stroke="#5EEAD4"/>
+   <text x="260" y="38" class="d-h sig">engine</text>
+   <text x="260" y="56" class="d-m">resona engine</text>
+   <text x="260" y="70" class="d-m">:8100 · GPU</text>
+   <path d="M112 47h16M232 47h16" stroke="#5EEAD4" stroke-width="1.5"/>
+   <text x="140" y="104" class="d-s" data-en="library, dialogues" data-es="biblioteca, diálogos">library, dialogues</text>
+   <text x="140" y="120" class="d-s" data-en="books, mastering" data-es="libros, mastering">books, mastering</text>
+   <text x="140" y="136" class="d-s" data-en="on the CPU" data-es="en la CPU">on the CPU</text>
+   <text x="260" y="104" class="d-s">Qwen3-TTS</text>
+   <text x="260" y="120" class="d-s">1.7B design</text>
+   <text x="260" y="136" class="d-s">0.6B base</text>
+   <rect x="8" y="160" width="344" height="30" rx="8" fill="none" stroke="#242C3D" stroke-dasharray="4 4"/>
+   <text x="20" y="179" class="d-s" data-en="one machine with an NVIDIA CUDA GPU · no hosted service" data-es="una máquina con GPU NVIDIA CUDA · sin servicio alojado">one machine with an NVIDIA CUDA GPU · no hosted service</text>
+  </svg>
+  <div>
+   <ul class="req">
+    <li data-en="An NVIDIA GPU with CUDA" data-es="Una GPU NVIDIA con CUDA">An NVIDIA GPU with CUDA</li>
+    <li data-en="Python 3.12, uv and ffmpeg" data-es="Python 3.12, uv y ffmpeg">Python 3.12, uv and ffmpeg</li>
+    <li data-en="The Qwen3-TTS weights (1.7B VoiceDesign, 0.6B Base), downloaded once" data-es="Los pesos de Qwen3-TTS (1.7B VoiceDesign, 0.6B Base), descargados una vez">The Qwen3-TTS weights (1.7B VoiceDesign, 0.6B Base), downloaded once</li>
+   </ul>
+   <div class="closed"><p data-en-html="Resona is in preview. To run it on your hardware, write to &lt;a href=&quot;mailto:hello@syalia.com?subject=Resona&quot;&gt;hello@syalia.com&lt;/a&gt;." data-es-html="Resona está en versión preliminar. Para correrla en tu equipo, escribe a &lt;a href=&quot;mailto:hello@syalia.com?subject=Resona&quot;&gt;hello@syalia.com&lt;/a&gt;.">Resona is in preview. To run it on your hardware, write to <a href="mailto:hello@syalia.com?subject=Resona">hello@syalia.com</a>.</p></div>
+  </div>
+ </div>
+</section>
+
+<section class="sec" id="status">
+ <span class="k" data-en="Status" data-es="Estado">Status</span>
+ <p class="lead" data-en="Preview. Resona is before its 1.0: interfaces still change and some modules are unfinished. The source will be public with a licence; this page will link it then." data-es="Versión preliminar. Resona está antes de su 1.0: las interfaces aún cambian y algunos módulos no están terminados. El código será público con una licencia; esta página lo enlazará entonces.">Preview. Resona is before its 1.0: interfaces still change and some modules are unfinished. The source will be public with a licence; this page will link it then.</p>
+</section>
+</main>
+
+<footer class="foot">
+ <span>resona · <span data-en="a Syalia product" data-es="un producto de Syalia">a Syalia product</span></span>
+ <span data-en="Speech models: Qwen3-TTS (Apache-2.0)" data-es="Modelos de voz: Qwen3-TTS (Apache-2.0)">Speech models: Qwen3-TTS (Apache-2.0)</span>
+ <a class="sp" href="https://syalia.com">syalia.com</a>
+</footer>
+<script src="js/site.js"></script>
+</body>
+</html>
